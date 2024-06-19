@@ -1,0 +1,18 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class Sheets extends Model
+{
+    use HasFactory;
+    protected $table = 'sheets';
+    protected $fillable = ['title', 'body'];
+
+    public function storedData($data){
+        $results = Sheets::create($data);
+        return $results;
+    }
+}
