@@ -9,10 +9,5 @@ class Sheets extends Model
 {
     use HasFactory;
     protected $table = 'sheets';
-    protected $fillable = ['title', 'body'];
-
-    public function storedData($data){
-        $results = Sheets::create($data);
-        return $results;
-    }
+    protected $fillable = ['title','body'];
 }

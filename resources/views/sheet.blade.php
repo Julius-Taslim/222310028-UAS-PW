@@ -1,11 +1,14 @@
 @extends('layout')
 
 @section('content')
-<form action ="/sheet" method="post" class="w-75 p-5">
-    <textarea id="mytextarea">Hello, World!</textarea>
-    <br>
-    <button type="button" class="btn btn-success" onclick="getContent()">Save</button>
-    <button type="button" class="btn btn-danger" onclick="">Cancel</button>
-</form>
+    <form action ="/{{ $sheet->id }}" method="POST" class="w-75 p-5">
+        @csrf
+        <input type="text" id="title" name="title" class="form-control" value="{{ old('title', $sheet->title) }}">
+        <textarea name="body" id="mytextarea">{{ $sheet->body }}</textarea>
+        <br>
+        <div>
+            <button type="submit" class="btn btn-success">Save</button>
+            <button type="button" class="btn btn-danger">Cancel</button>
+        </div>
+    </form>
 @endsection
-
