@@ -4,21 +4,27 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\SheetController;
 use Illuminate\Support\Facades\Route;
 
-// Route::get('/sign-in',[AuthController::class,'login']);
-Route::get('/',[SheetController::class,'index']);
-Route::post('/',[SheetController::class, 'createSheet']);
-Route::get('/{sheet}',[SheetController::class,'sheet']);
-Route::post('/{sheet}',[SheetController::class,'editSheet']);
+// Redirect root URL to /login
+Route::get('/', function () {
+    return redirect()->route('login');
+});
 
+// Auth Routes
+Route::get('/register', function () {
+    return view('auth.register');
+})->name('register');
+Route::post('/register', [AuthController::class, 'register']);
+Route::get('/login', function () {
+    return view('auth.signin');
+})->name('login');
+Route::post('/login', [AuthController::class, 'login']);
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-// Route::get('/', function () {
-//     return view('auth.signin');
-// })->name("login");
-
-// Route::post('/login',[AuthController::class,'login']);
-
-// Route::get('/users',function(){
-//     return view("auth.admin.dashboard");
-// })->middleware('auth');
-
-// Route::post('/logout', [AuthController::class, 'logout']);
+// Protected Routes
+Route::middleware('auth')->group(function () {
+    Route::get('/sheet', [SheetController::class, 'index'])->name('user.sheet');
+    Route::post('/sheet', [SheetController::class, 'createSheet'])->name('sheet.create');
+    Route::get('/sheet/{sheet}', [SheetController::class, 'sheet']);
+    Route::post('/sheet/{sheet}', [SheetController::class, 'editSheet']);
+    Route::delete('/sheet/{sheet}', [SheetController::class, 'deleteSheet'])->name('sheet.delete');
+});

@@ -44,4 +44,9 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    //Relations
+    public function sheets(){
+        return $this->hasMany(Sheets::class);
+    }
 }

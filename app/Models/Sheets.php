@@ -9,5 +9,5 @@ class Sheets extends Model
 {
     use HasFactory;
     protected $table = 'sheets';
-    protected $fillable = ['title','body'];
+    protected $fillable = ['user_id','title','body'];
 }

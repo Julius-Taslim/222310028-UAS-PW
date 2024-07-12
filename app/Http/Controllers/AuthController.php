@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
@@ -15,7 +17,8 @@ class AuthController extends Controller
 
         if(Auth::attempt($credentials)){
             $request -> session() -> regenerate();
-            return redirect() -> intended ('/users');
+            $user = Auth::user();
+            return redirect() -> route('user.sheet');
         }
 
         return back()->with('loginError', 'The provided credentials do not match our records.');
@@ -27,6 +30,18 @@ class AuthController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect('/');
+        return redirect()->route('login');
+    }
+
+    public function register(Request $request){
+        $newUser = $request->validate([
+            "name" => "required",
+            "email" => "required||email:dns",
+            "password" => "required"
+        ]);
+        $newUser['password'] = Hash::make($newUser['password']);
+        User::create($newUser);
+
+        return redirect('/login');
     }
 }
